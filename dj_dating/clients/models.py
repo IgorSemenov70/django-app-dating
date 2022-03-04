@@ -1,6 +1,9 @@
 import os
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
 from imagekit.models.fields import ProcessedImageField
@@ -62,12 +65,23 @@ class UserManager(BaseUserManager):
         return user
 
 
+class Like(models.Model):
+    """Модель лайка"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             related_name='likes',
+                             on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     """ Модель участника """
     email = models.EmailField(db_index=True, unique=True, help_text='Электронная почта')
     first_name = models.CharField(max_length=150, help_text='Имя')
     last_name = models.CharField(max_length=150, help_text='Фамилия')
     gender = models.CharField(max_length=10, help_text='Пол')
+    likes = GenericRelation(Like)
     avatar = ProcessedImageField(upload_to=get_path_upload_avatar,
                                  blank=True,
                                  null=True,
@@ -93,3 +107,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """ Строковое представление модели """
         return self.email
+
+    def get_full_name(self):
+        full_name = "%s %s" % (self.first_name, self.last_name)
+        return full_name.strip()

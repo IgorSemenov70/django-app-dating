@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
+from . import services
 from .models import User
 
 
@@ -14,7 +15,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'last_name', 'gender', 'avatar', 'token')
+        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'gender', 'avatar', 'token')
 
     def create(self, validated_data: Dict[str, str]):
         """ Метод для создания нового пользователя """
@@ -47,7 +48,27 @@ class LoginSerializer(serializers.Serializer):
 
         return {
             'email': user.email,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
             'token': Token.objects.get(user=user).key
         }
+
+
+# class ClientListSerializer(serializers.ModelSerializer):
+#     like = serializers.BooleanField()
+#
+#     class Meta:
+#         model = User
+#         fields = ('id', 'email', 'first_name', 'last_name', 'gender', 'avatar', 'like')
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    """Сериализатор участника"""
+    is_fan = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'last_name', 'gender', 'avatar', 'is_fan')
+
+    def get_is_fan(self, obj):
+        """Проверяет, лайкнул ли user obj"""
+        user = self.context.get('request').user
+        return services.is_fan(obj, user)

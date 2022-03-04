@@ -141,3 +141,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     )
 }
+
+# smtp
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'iseemm70@gmail.com'
+EMAIL_HOST_PASSWORD = 'ctyzhekbn1234'
+EMAIL_PORT = 587
