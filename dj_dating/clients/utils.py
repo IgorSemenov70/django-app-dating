@@ -10,6 +10,7 @@ class Watermark(object):
 
 
 def add_watermark(image, watermark):
+    """Накладывает водяной знак на картинку"""
     rgba_image = image.convert('RGBA')
     rgba_watermark = watermark.convert('RGBA')
 

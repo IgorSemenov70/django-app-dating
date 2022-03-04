@@ -33,13 +33,16 @@ class UserManager(BaseUserManager):
     def create_user(self, first_name, last_name, email, gender, avatar=None, password=None):
         """ Создает и возвращает пользователя с имэйлом, паролем, токеном, именем и фамилией. """
         if first_name is None:
-            raise TypeError('Users must have an first_name address.')
+            raise TypeError('Users must have an first_name.')
 
         if last_name is None:
-            raise TypeError('Users must have an last_name address.')
+            raise TypeError('Users must have an last_name.')
 
         if email is None:
             raise TypeError('Users must have an email address.')
+
+        if gender is None:
+            raise TypeError('Users must have an gender')
 
         user = self.model(first_name=first_name,
                           last_name=last_name,
@@ -52,12 +55,12 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, first_name, last_name, email, password):
+    def create_superuser(self, first_name, last_name, email, gender, password):
         """ Создает и возвращет пользователя с привилегиями суперадмина. """
         if password is None:
             raise TypeError('Superusers must have a password.')
 
-        user = self.create_user(first_name, last_name, email, password)
+        user = self.create_user(first_name, last_name, email, gender, password)
         user.is_superuser = True
         user.is_staff = True
         user.save()
@@ -109,5 +112,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def get_full_name(self):
+        """Возвращает имя и фамилию участника"""
         full_name = "%s %s" % (self.first_name, self.last_name)
         return full_name.strip()

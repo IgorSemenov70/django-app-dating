@@ -52,16 +52,8 @@ class LoginSerializer(serializers.Serializer):
         }
 
 
-# class ClientListSerializer(serializers.ModelSerializer):
-#     like = serializers.BooleanField()
-#
-#     class Meta:
-#         model = User
-#         fields = ('id', 'email', 'first_name', 'last_name', 'gender', 'avatar', 'like')
-
-
-class ClientSerializer(serializers.ModelSerializer):
-    """Сериализатор участника"""
+class ClientListSerializer(serializers.ModelSerializer):
+    """Сериализатор для списка участников"""
     is_fan = serializers.SerializerMethodField()
 
     class Meta:
