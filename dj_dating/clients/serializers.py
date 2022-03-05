@@ -16,7 +16,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'gender', 'avatar', 'token')
+        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'gender', 'avatar', 'token', 'longitude',
+                  'latitude')
 
     def create(self, validated_data: Dict[str, str]):
         """ Метод для создания нового пользователя """
