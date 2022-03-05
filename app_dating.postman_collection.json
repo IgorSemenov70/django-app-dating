@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "cad73160-588f-4c6e-ba8e-e329677eb909",
+		"name": "app_dating",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create_user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "test6@mail.ru",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "user2",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "testuser1",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "male",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456test",
+							"type": "text"
+						},
+						{
+							"key": "avatar",
+							"type": "file",
+							"src": "/Users/igorsemenov/Desktop/avatar.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/clients/create/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"clients",
+						"create",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login_user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"iseemm@icloud.com\",\n    \"password\": \"123456test\",\n    \"token\": \"771096ae417c7deffab1028e530a59b4c1ce09fd\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/clients/login/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"clients",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "like_user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 771096ae417c7deffab1028e530a59b4c1ce09fd",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/clients/5/match/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"clients",
+						"5",
+						"match",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 771096ae417c7deffab1028e530a59b4c1ce09fd",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/list/?distance=7",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"list",
+						""
+					],
+					"query": [
+						{
+							"key": "distance",
+							"value": "7"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		}
+	]
+}

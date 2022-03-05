@@ -1,9 +1,8 @@
 from django.db.models.query import QuerySet
-from rest_framework import permissions
+from rest_framework import permissions, generics
 from rest_framework import status, viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from . import services
 from .filters import ClientsFilter, DistanceBetweenClientsFilter
@@ -11,7 +10,7 @@ from .models import User
 from .serializers import RegistrationSerializer, LoginSerializer, ClientListSerializer
 
 
-class RegistrationAPIView(APIView):
+class RegistrationAPIView(generics.GenericAPIView):
     """Представление для регистрации участника"""
     permission_classes = [permissions.AllowAny]
     serializer_class = RegistrationSerializer
@@ -24,7 +23,7 @@ class RegistrationAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class LoginAPIView(APIView):
+class LoginAPIView(generics.GenericAPIView):
     """Представление для входа в систему участника"""
     permission_classes = [permissions.AllowAny]
     serializer_class = LoginSerializer
@@ -35,7 +34,7 @@ class LoginAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class LikeUserAPIView(APIView):
+class LikeUserAPIView(generics.GenericAPIView):
     """Представление для проставления лайка участнику"""
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ClientListSerializer
