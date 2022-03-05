@@ -32,7 +32,7 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "test6@mail.ru",
+							"value": "test15@mail.ru",
 							"type": "text"
 						},
 						{
@@ -58,7 +58,17 @@
 						{
 							"key": "avatar",
 							"type": "file",
-							"src": "/Users/igorsemenov/Desktop/avatar.jpg"
+							"src": "/Users/igorsemenov/Desktop/avatar3.jpg"
+						},
+						{
+							"key": "longitude",
+							"value": "53.6",
+							"type": "text"
+						},
+						{
+							"key": "latitude",
+							"value": "54.8",
+							"type": "text"
 						}
 					]
 				},
@@ -151,7 +161,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/api/list/?distance=7",
+					"raw": "{{url}}/api/list/",
 					"host": [
 						"{{url}}"
 					],
@@ -159,12 +169,6 @@
 						"api",
 						"list",
 						""
-					],
-					"query": [
-						{
-							"key": "distance",
-							"value": "7"
-						}
 					]
 				}
 			},
@@ -194,7 +198,7 @@
 	"variable": [
 		{
 			"key": "url",
-			"value": "http://127.0.0.1:8000",
+			"value": "http://80.249.151.17:5055",
 			"type": "string"
 		}
 	]
