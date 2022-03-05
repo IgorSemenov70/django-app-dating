@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from rest_framework import permissions
 from rest_framework import status, viewsets
 from rest_framework.request import Request
@@ -5,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from . import services
-from .filters import ClientsFilter
+from .filters import ClientsFilter, DistanceBetweenClientsFilter
 from .models import User
 from .serializers import RegistrationSerializer, LoginSerializer, ClientListSerializer
 
@@ -45,8 +46,12 @@ class LikeUserAPIView(APIView):
 
 
 class ClientListAPIView(viewsets.ReadOnlyModelViewSet):
-    """Вывод участников"""
-    permission_classes = [permissions.AllowAny]
+    """Представление для вывода участников"""
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = ClientListSerializer
+    filter_backends = (DistanceBetweenClientsFilter,)
     filterset_class = ClientsFilter
-    queryset = User.objects.filter(is_active=True)
+
+    def get_queryset(self) -> QuerySet:
+        queryset = User.objects.filter(is_active=True).exclude(email=self.request.user.email)
+        return queryset

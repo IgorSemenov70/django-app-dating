@@ -16,7 +16,7 @@ from .utils import Watermark
 def get_path_upload_avatar(instance, file):
     """
     Возвращает путь к загруженному изображению в след.формате:
-     (media)/profile_pics/user_1/myphoto_2018-12-2.png
+     media/profile_pics/user_1/myphoto_2018-12-2.png
     """
     time = timezone.now().strftime("%Y-%m-%d")
     end_extention = file.split('.')[-1]
@@ -89,11 +89,10 @@ class User(AbstractBaseUser, PermissionsMixin):
                                  blank=True,
                                  null=True,
                                  help_text='Аватар',
-                                 processors=[
-                                     ResizeToFit(1000, 1000, upscale=False),
-                                     Watermark()
-                                 ],
+                                 processors=[ResizeToFit(400, 400, upscale=False), Watermark()],
                                  format='JPEG')
+    latitude = models.FloatField(null=True, blank=True, help_text='Широта')
+    longitude = models.FloatField(null=True, blank=True, help_text='Долгота')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 

@@ -1,6 +1,7 @@
 from typing import Dict
 
 from django.contrib.auth import authenticate
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
@@ -28,7 +29,7 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=128, write_only=True)
     token = serializers.CharField(max_length=255, read_only=True)
 
-    def validate(self, data: Dict[str, str]):
+    def validate(self, data: Dict[str, str]) -> Dict[str, str]:
         email = data.get('email', None)
         password = data.get('password', None)
 
@@ -55,12 +56,24 @@ class LoginSerializer(serializers.Serializer):
 class ClientListSerializer(serializers.ModelSerializer):
     """Сериализатор для списка участников"""
     is_fan = serializers.SerializerMethodField()
+    distance = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'gender', 'avatar', 'is_fan')
+        fields = ('id', 'first_name', 'last_name', 'gender', 'avatar', 'is_fan', 'distance')
 
     def get_is_fan(self, obj):
-        """Проверяет, лайкнул ли user obj"""
+        """Проверяет, лайкнул ли участник другого участника"""
         user = self.context.get('request').user
         return services.is_fan(obj, user)
+
+    def get_distance(self, obj):
+        """Показывает расстояние от участника до другого участника"""
+        user = self.context.get('request').user
+        another_user = get_object_or_404(User, pk=obj.id)
+        return services.get_distance_between_clients(
+            lon_1=user.longitude,
+            lat_1=user.latitude,
+            lon_2=another_user.longitude,
+            lat_2=another_user.latitude
+        )
