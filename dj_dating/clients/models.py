@@ -30,7 +30,8 @@ def get_path_upload_avatar(instance, file):
 class UserManager(BaseUserManager):
     """ Кастомный класс менеджер """
 
-    def create_user(self, first_name, last_name, email, gender, avatar=None, password=None):
+    def create_user(self, first_name, last_name, email, gender, avatar=None, longitude=None, latitude=None,
+                    password=None):
         """ Создает и возвращает пользователя с имэйлом, паролем, токеном, именем и фамилией. """
         if first_name is None:
             raise TypeError('Users must have an first_name.')
@@ -48,7 +49,9 @@ class UserManager(BaseUserManager):
                           last_name=last_name,
                           email=self.normalize_email(email),
                           gender=gender,
-                          avatar=avatar)
+                          avatar=avatar,
+                          longitude=longitude,
+                          latitude=latitude)
         user.set_password(password)
         user.save()
         Token.objects.create(user=user)
