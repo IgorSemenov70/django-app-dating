@@ -12,10 +12,10 @@ from .services import get_distance_between_clients
 
 class ClientsFilter(filters.FilterSet):
     """ Фильтр для вывода списка участников по полу, имени и фамилии """
-    gender = filters.CharFilter(field_name='gender', lookup_expr='iexact')
-    first_name = filters.CharFilter(field_name='first_name', lookup_expr='iexact')
-    last_name = filters.CharFilter(field_name='last_name', lookup_expr='iexact')
-    distance = filters.NumberFilter(field_name='distance', lookup_expr='lte')
+    gender = filters.CharFilter(field_name='gender', label='Пол', lookup_expr='iexact')
+    first_name = filters.CharFilter(field_name='first_name', label='Имя', lookup_expr='iexact')
+    last_name = filters.CharFilter(field_name='last_name', label='Фамилия', lookup_expr='iexact')
+    distance = filters.NumberFilter(field_name='distance', label='Дистанция', lookup_expr='lte')
 
     class Meta:
         model = User
@@ -23,13 +23,13 @@ class ClientsFilter(filters.FilterSet):
 
 
 class DistanceBetweenClientsFilter(DjangoFilterBackend):
-    """Фильтр для вывода списка участников находящихся на заданной дистанции друг от друга"""
+    """ Фильтр для вывода списка участников находящихся на заданной дистанции друг от друга """
 
     def filter_queryset(self, request: Request, queryset: QuerySet, view: View) -> Union[QuerySet, List]:
         another_users = queryset
         new_queryset = []
         distance_param = request.GET.get('distance')
-        if distance_param and bool(float(distance_param)):
+        if distance_param and bool(float(distance_param)) and request.user.is_authenticated:
             for user in another_users:
                 current_user_long = request.user.longitude
                 current_user_lat = request.user.latitude

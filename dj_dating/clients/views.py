@@ -38,6 +38,7 @@ class LikeUserAPIView(generics.GenericAPIView):
     """Представление для проставления лайка участнику"""
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ClientListSerializer
+    queryset = ''
 
     def post(self, request: Request, pk: int = None) -> Response:
         obj = User.objects.get(id=pk)
@@ -46,11 +47,14 @@ class LikeUserAPIView(generics.GenericAPIView):
 
 class ClientListAPIView(viewsets.ReadOnlyModelViewSet):
     """Представление для вывода участников"""
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = ClientListSerializer
     filter_backends = (DistanceBetweenClientsFilter,)
     filterset_class = ClientsFilter
 
     def get_queryset(self) -> QuerySet:
-        queryset = User.objects.filter(is_active=True).exclude(email=self.request.user.email)
+        if self.request.user.is_authenticated:
+            queryset = User.objects.filter(is_active=True).exclude(email=self.request.user.email)
+        else:
+            queryset = User.objects.filter(is_active=True)
         return queryset

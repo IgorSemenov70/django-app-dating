@@ -71,6 +71,8 @@ class ClientListSerializer(serializers.ModelSerializer):
     def get_distance(self, obj):
         """Показывает расстояние от участника до другого участника"""
         user = self.context.get('request').user
+        if user.is_anonymous:
+            return
         another_user = get_object_or_404(User, pk=obj.id)
         return services.get_distance_between_clients(
             lon_1=user.longitude,
